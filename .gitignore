@@ -1,0 +1,4 @@
+node_modules/
+.env
+Combined.log
+SRC/Config/config.json
