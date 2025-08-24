@@ -1,7 +1,6 @@
-import { PORT } from "./server-config.js";
+export{CONFIG} from "./server-config.js";
 import {logger} from "./logger-config.js";
+
 export {
-    PORT,
     logger,
-    
 };

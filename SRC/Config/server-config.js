@@ -1,4 +1,10 @@
 import dotenv from "dotenv";
 dotenv.config();
-
-export const PORT = process.env.PORT || 3000;
+const PORT=process.env.PORT || 3000;
+const FLIGHT_SERVICE_URL =process.env.FLIGHT_SERVICE_URL;
+export const CONFIG=
+{
+    PORT,
+    FLIGHT_SERVICE_URL,
+    
+}

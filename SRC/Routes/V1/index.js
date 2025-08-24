@@ -1,13 +1,11 @@
 import expres from "express";
 import controllers from '../../Controllers/index.js';
+import bookingRoutes from "./booking-route.js";
 const router = expres.Router();
 
-// router.get("/info", (req, res) => {
-//     return res.json({
-//         "name": "Flight-Tickets",
-//         "version": "1.0.0"
-//     });
-// });
+
+
 router.get("/info", controllers.info_Controller);
+router.use("/bookings" , bookingRoutes);
 
 export default router;
