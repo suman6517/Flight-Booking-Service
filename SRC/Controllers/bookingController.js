@@ -27,9 +27,36 @@ async function createBooking(req,res)
         return res.status(statusCodes.INTERNAL_SERVER_ERROR).json(errorResponse);
     }
     
+};
+
+async function makePayment(req,res) 
+{
+    try 
+    {
+        const response = await BookingService.makePayment({
+            totalCost:req.body.totalCost,
+            userId:req.body.userId,
+            bookingId:req.body.bookingId,
+            
+
+        });
+
+         successResponse.data = response;
+         return res.status(statusCodes.CREATED).json(successResponse);
+        
+    } 
+    catch (error) 
+    {
+        errorResponse.message = "Something Went Wrong in Booking Controller Update Booking";
+        errorResponse.error = error;
+        return res.status(statusCodes.INTERNAL_SERVER_ERROR).json(errorResponse);
+    }
+    
 }
+
+
 
 export const BookingController = {
     createBooking,
-
+    makePayment
 }
