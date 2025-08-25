@@ -2,7 +2,7 @@ import { BookingService } from "../Services/index.js";
 import statusCodes from "http-status-codes";
 import{successResponse , errorResponse} from "../Utils/Common/index.js";
 
-
+const InMemoryDB = [];
 
 async function createBooking(req,res) 
 {
@@ -33,13 +33,33 @@ async function makePayment(req,res)
 {
     try 
     {
-        const response = await BookingService.makePayment({
+        
+        const IdempotencyKey = req.headers['idempotency-key'];
+        if(!IdempotencyKey)
+        {
+            return res.status(statusCodes.BAD_REQUEST).json(
+                {
+                    message:"Idempotency Key Not Found"
+                }
+             );
+        }
+        if(!IdempotencyKey || InMemoryDB[IdempotencyKey])
+        {
+             return res.status(statusCodes.BAD_REQUEST).json(
+                {
+                    message:"Can Not Retry On a Successful Payment"
+                }
+             );
+        }
+
+           const response = await BookingService.makePayment({
             totalCost:req.body.totalCost,
             userId:req.body.userId,
             bookingId:req.body.bookingId,
             
 
         });
+        InMemoryDB[IdempotencyKey] = IdempotencyKey;
 
          successResponse.data = response;
          return res.status(statusCodes.CREATED).json(successResponse);

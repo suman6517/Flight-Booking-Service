@@ -105,7 +105,7 @@ async function cancelBooking(bookingId)
 
      await axios.patch(`${CONFIG.FLIGHT_SERVICE_URL}/api/v1/flights/${bookingDetails.flightId}/seats`,{
                 seats:bookingDetails.noOfSeats,
-                dec:0
+                dec:1
               });
                await bookFlight.update(bookingId,{status:CANCELLED} , transaction);
                await transaction.commit();
