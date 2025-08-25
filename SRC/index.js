@@ -1,6 +1,7 @@
 import express from "express";
 import {logger , CONFIG} from "./Config/index.js";
 import apiRoutes from "./Routes/index.js";
+import {secheduleCrons} from "../SRC/Utils/Common/index.js";
 const app = express();
 
 
@@ -13,5 +14,6 @@ app.use("/api", apiRoutes);
 app.listen(CONFIG.PORT, () => {
     console.log(`Server is running on port ${CONFIG.PORT}`);
     logger.info("Succesfully started the server " , {});
+    secheduleCrons();
 });
 

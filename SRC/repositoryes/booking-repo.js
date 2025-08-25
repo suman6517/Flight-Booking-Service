@@ -1,6 +1,9 @@
 import db from "../models/index.js";
 import CrudRepo from "./crud-repo.js";
+import {Op} from "sequelize";
+import {BookingStatus} from '../Utils/Common/index.js'
 
+const{ CANCELLED , BOOKED} = BookingStatus;
 class BookingRepo extends CrudRepo
 {
     constructor(model)
@@ -39,16 +42,41 @@ class BookingRepo extends CrudRepo
       
        
             return response;     
-    }
+    };
 
-//     async update(id, data, transaction) { // data -> {col: value, ....}
-//         const response = await db.Booking.update(data, {
-//             where: {
-//                 id: id
-//             }
-//         }, {transaction: transaction});
-//         return response;
-//     }
+    async cancelOldBookings(timestamp)
+    {
+        const response = await db.Booking.update({
+            status:CANCELLED 
+        },{
+            where:
+            {
+                 [Op.and]:[
+                {
+                    createdAt:
+                    {
+                        [Op.lt]:timestamp
+                    }
+                },
+                {
+                    status:
+                    {
+                        [Op.ne]:BOOKED
+                    }
+                },
+                {
+                    status:
+                    {
+                        [Op.ne]:CANCELLED
+                    }
+                },
+                
+
+            ]}
+        });
+        return response;
+    };
+
 
 }
 

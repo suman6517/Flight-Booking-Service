@@ -117,9 +117,28 @@ async function cancelBooking(bookingId)
     throw error;
   }
   
-}
+};
+
+async function cancelOldBooking() 
+{
+  try 
+  {
+    const currentTime = new Date(Date.now() - (1000*300));
+    const response = await bookFlight.cancelOldBookings(currentTime);
+    return response;
+
+  }
+  catch (error) 
+  {
+    console.log(error);
+    
+  }
+  
+};
 
 export const BookingService = {
     createBooking,
-    makePayment
+    makePayment,
+    cancelOldBooking,
+
 }
